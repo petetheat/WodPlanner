@@ -19,7 +19,7 @@ class WodPlanner:
         self.df_g, self.df_w, self.df_m = self._load_movements()
 
     def _initialize_wod_db(self):
-        columns = ['Date', 'Strengh/Skill', 'Sets_reps', 'Movement', 'Scheme',
+        columns = ['Date', 'Strength/Skill', 'Sets_reps', 'Movement', 'Scheme',
                    'Time_rounds', 'Wod_Movements', 'Reps', 'Weight', 'Comments']
 
         df = pd.DataFrame(columns=columns)
@@ -34,7 +34,7 @@ class WodPlanner:
                  weights, comments=None):
 
         wod = {'Date': date,
-               'Strengh/Skill': strength_skill,
+               'Strength/Skill': strength_skill,
                'Sets_reps': sets_reps,
                'Movement': movement,
                'Scheme': scheme,
@@ -45,7 +45,9 @@ class WodPlanner:
                'Comments': comments}
 
         self.wod = pd.concat([self.wod, pd.json_normalize(wod)])
-        self.wod['Date'] = pd.to_datetime(self.wod['Date'], format='%d/%m/%Y')
+        # self.wod['Date'] = pd.to_datetime(self.wod['Date'], format='%d/%m/%Y')
+
+        self.wod.to_hdf(self.wod_name, key='wod')
 
     def _load_movements(self):
         df_g = pd.read_hdf(self.db_name, 'g')
