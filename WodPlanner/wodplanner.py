@@ -63,34 +63,37 @@ class WodPlanner:
 
         self.c.execute('SELECT Schema from schemas;')
         schemas = [x[0] for x in self.c.fetchall()]
+        schemas.sort()
 
         return movements, schemas
 
-    def _add_wod(self, date, strength_skill, sets_reps, movement, scheme, time_rounds, wod_movements, reps,
-                 weights, comments=''):
+    def _add_wod(self, date, strength_skill, sets_reps, movement, comments_strength, scheme,
+                 time_rounds, wod_movements, reps, weights, comments_wod):
         """
 
         :param date:
         :param strength_skill:
         :param sets_reps:
         :param movement:
+        :param comments_strength
         :param scheme:
         :param time_rounds:
         :param wod_movements:
         :param reps:
         :param weights:
-        :param comments:
+        :param comments_wod:
         """
         wod = {'Date': date,
                'Strength/Skill': strength_skill,
                'Sets_reps': sets_reps,
                'Movement': movement,
+               'Comments Strength': comments_strength,
                'Scheme': scheme,
                'Time_rounds': time_rounds,
                'Wod_Movements': wod_movements,
                'Reps': reps,
                'Weight': weights,
-               'Comments': comments}
+               'Comments WOD': comments_wod}
 
         mydates = self.c.execute("select json_extract(data, '$.Date') from wods").fetchall()
         mydates = [x[0] for x in mydates]
